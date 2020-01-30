@@ -1,1 +1,9 @@
 datapath: /home/manik/repos/nn4nlp/assignment1/data/topicclass/
+embed_path: /home/manik/repos/nn4nlp/assignment1/data/glove.6B.50d.txt
+vocab_labels_path: /home/manik/repos/nn4nlp/assignment1/data/topicclass/vocab_labels.json
+vocab_text_path: /home/manik/repos/nn4nlp/assignment1/data/topicclass/vocab_text.json
+train_data_path: /home/manik/repos/nn4nlp/assignment1/data/topicclass/train_data.pkl
+valid_data_path: /home/manik/repos/nn4nlp/assignment1/data/topicclass/valid_data.pkl
+test_data_path: /home/manik/repos/nn4nlp/assignment1/data/topicclass/test_data.pkl
+pad_token: <PAD>
+unk_token: <UNK>
