@@ -3,30 +3,6 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 
 
-def get_xy(fname, sep=" ||| "):
-    """
-    Expects file containing <label><sep><sentence>
-    :param fname: name of file
-    :param sep: separator to split lines
-    :return: list of labels Y and sentences X
-    """
-    X, Y = [], []
-    with open(fname, 'r') as f:
-        all_lines = f.read().split('\n')
-        for line in all_lines:
-            line = line.strip()
-            if len(line) == 0:
-                continue
-            y, x = line.split(sep)
-            # correct for validation mistake in labels
-            if y == "Media and darama":
-                y = "Media and drama"
-            X.append(x)
-            Y.append(y)
-    assert len(X) == len(Y)
-    return X, Y
-
-
 class ClassificationDataset(Dataset):
     def __init__(self, data):
         """
