@@ -2,6 +2,7 @@ import os
 import json
 import yaml
 import pickle
+import random
 import numpy as np
 from collections import Counter
 from data import get_xy
@@ -89,6 +90,37 @@ def save_dataset(text, labels, output_path):
     pickle.dump(data, open(output_path, 'wb'))
 
 
+def save_embeddings(embed_file, vocab_file, out_file):
+    """
+    Saves the embeddings as an np array mapped according to the vocabulary
+    :param out_file: location of the output pickle
+    :param embed_file: embedding file with format <word><space><space separated vector>
+    :param vocab_file: word to id mapping file - json format
+    :return: None
+    """
+    if os.path.exists(out_file):
+        print("output file {} exists".format(out_file))
+    word2id = json.load(open(vocab_file, 'r'))
+    embeddings = [[] for _ in range(len(word2id))]  # initialize empty embeddings matrix
+    word2vec = {}
+    with open(embed_file, 'r') as f:
+        for line in f:
+            line_split = line.split(" ")
+            word, vec = line_split[0], line_split[1:]
+            word2vec[word] = vec
+    emb_dim = len(word2vec['the'])
+    for word in word2id:
+        if word in word2vec:
+            embeddings[word2id[word]] = word2vec[word]
+        else:
+            # initialize random embeddings for unknown words
+            embeddings[word2id[word]] = [random.random() for _ in range(emb_dim)]
+
+    embeddings = np.array(embeddings)
+    print("saving embeddings of shape {}".format(embeddings.shape))
+    pickle.dump(embeddings, open(out_file, 'wb'))
+
+
 if __name__ == "__main__":
     config = yaml.safe_load(open("config.yml", 'r'))
     DATAPATH = config['datapath']
@@ -100,3 +132,4 @@ if __name__ == "__main__":
     make_vocab(valid_labels + train_labels, config['vocab_labels_path'], split=False, add_pad=False, add_unk=False)
     save_dataset(train_text, train_labels, config['train_data_path'])
     save_dataset(valid_text, valid_labels, config['valid_data_path'])
+    save_embeddings(config['embed_path'], config['vocab_text_path'], config['vocab_embed_path'])
