@@ -91,7 +91,10 @@ def save_dataset(text, labels, output_path):
             words += [PAD_TOKEN] * (max_len - len_words)
         sentence_ids = []
         for word in words:
-            sentence_ids.append(word2id[word])
+            if word in word2id:
+                sentence_ids.append(word2id[word])
+            else:
+                sentence_ids.append(word2id[config['unk_token']])
         sentences_ids.append(sentence_ids)
         if i % 10000 == 0:
             print("processed {} sentences".format(i))
@@ -102,7 +105,11 @@ def save_dataset(text, labels, output_path):
 
     labels_ids = []
     for i, label in enumerate(labels):
-        labels_ids.append(label2id[label])
+        if label in label2id:
+            labels_ids.append(label2id[label])
+        else:
+            # For test set we don't have labels
+            labels_ids.append(-1)
     labels_arr = np.array(labels_ids)
     print("saving labels_arr of shape {}".format(labels_arr.shape))
     data = {
@@ -123,15 +130,19 @@ def save_embeddings(embed_file, vocab_file, out_file):
     """
     if os.path.exists(out_file):
         print("output file {} exists".format(out_file))
+        return
     word2id = json.load(open(vocab_file, 'r'))
     embeddings = [[] for _ in range(len(word2id))]  # initialize empty embeddings matrix
     word2vec = {}
     with open(embed_file, 'r') as f:
         for line in f:
+            line = line.strip()
             line_split = line.split(" ")
             word, vec = line_split[0], line_split[1:]
+            vec = [float(element) for element in vec]
             word2vec[word] = vec
     emb_dim = len(word2vec['the'])
+    print("loaded word-vector mapping in memory")
     for word in word2id:
         if word in word2vec:
             embeddings[word2id[word]] = word2vec[word]
@@ -149,10 +160,16 @@ if __name__ == "__main__":
     DATAPATH = config['datapath']
     PAD_TOKEN = config['pad_token']
     UNK_TOKEN = config['unk_token']
+
     valid_text, valid_labels = get_xy(DATAPATH + "topicclass_valid.txt")
     train_text, train_labels = get_xy(DATAPATH + "topicclass_train.txt")
+    test_text, test_labels = get_xy(DATAPATH + "topicclass_test.txt")
+
     make_vocab(train_text + valid_text, config['vocab_text_path'], split=True, add_pad=True, add_unk=True)
-    make_vocab(valid_labels + train_labels, config['vocab_labels_path'], split=False, add_pad=False, add_unk=False)
+    make_vocab(valid_labels + train_labels, config['vocab_labels_path'], split=False, add_pad=False, add_unk=True)
+
     save_dataset(train_text, train_labels, config['train_data_path'])
     save_dataset(valid_text, valid_labels, config['valid_data_path'])
+    save_dataset(test_text, test_labels, config['test_data_path'])
+
     save_embeddings(config['embed_path'], config['vocab_text_path'], config['vocab_embed_path'])
