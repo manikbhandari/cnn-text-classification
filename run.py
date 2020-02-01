@@ -43,6 +43,12 @@ def get_opt(args, model):
         return NotImplementedError("unknown optimizer {}".format(args.optim))
 
 
+def normalize_weight(weight_tensor):
+    norm = torch.norm(weight_tensor)
+    if norm > args.max_l2_norm:
+        weight_tensor.div_(norm/args.max_l2_norm)
+
+
 def get_loss(criterion, out, labels):
     loss = criterion(out, labels)
     return loss
@@ -73,6 +79,7 @@ def train_epoch(train_dataloader, model, criterion, optimizer, epoch):
         total_correct += ncorrect
 
         optimizer.step()
+        normalize_weight(model.output_layer.weight.data)
         optimizer.zero_grad()
         if i_batch > 0 and i_batch % args.batch_print == 0:
             print("batch ", i_batch, "loss ", loss.item(), "batch acc: ", acc)
@@ -117,6 +124,7 @@ if __name__ == '__main__':
     parser.add_argument("-batch_print", type=int, default=20000, help="print status of batch after these many batches")
     parser.add_argument("-drop_prob", type=float, default=0.5, help="probability to drop")
     parser.add_argument("-epochs", type=int, default=50, help="number of epochs to train for")
+    parser.add_argument("-max_l2_norm", type=float, default=3.0, help="normalize output layer weights to this value")
     args = parser.parse_args()
 
     config = yaml.safe_load(open("config.yml"))
