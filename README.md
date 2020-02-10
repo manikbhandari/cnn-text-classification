@@ -1,8 +1,6 @@
 # src-nn4nlp-text-classification
 This is the code for text classification using [Yoon Kim's model](https://www.aclweb.org/anthology/D14-1181.pdf).
 
-To run the model for best results, run the following command
-
 ### Data preparation
 Input data must be in three files:
 * topicclass_train.txt
