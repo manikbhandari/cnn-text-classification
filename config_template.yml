@@ -1,0 +1,10 @@
+datapath: <folder containing all three files - train, valid, test>
+embed_path: <text file for pre-trained word embeddings - space separated one vector per line - <word><space><vec>>
+vocab_labels_path: <json file for label-to-id (it is created)>
+vocab_text_path: <json file for word-to-id (it is created)>
+train_data_path: <train pickle output (it is created)>
+valid_data_path: <valid pickle out (it is created)>
+test_data_path: <test pickle out (it is created)>
+vocab_embed_path: <vocab embedded pickle (it is created)>
+pad_token: <PAD>
+unk_token: <UNK>
