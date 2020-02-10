@@ -29,3 +29,6 @@ A template is provided in the repo.
 ```shell script
 python run.py -model kim_cnn -lr 0.001 -drop_prob 0.5 -batch_size 4096 -cuda -use_trainable_embed -use_fixed_embed -gpu 0 -epochs 10
 ``` 
+
+### Requirements
+Please install the requirements file provided in the repo using anaconda. 
