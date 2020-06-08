@@ -1,5 +1,5 @@
-# src-nn4nlp-text-classification
-This is the code for text classification using [Yoon Kim's model](https://www.aclweb.org/anthology/D14-1181.pdf).
+# Text classification using pytorch
+This is an easy to understand code for text classification using [Yoon Kim's model](https://www.aclweb.org/anthology/D14-1181.pdf) written in pytorch.
 
 ### Data preparation
 Input data must be in three files:
@@ -30,4 +30,4 @@ python run.py -model kim_cnn -lr 0.001 -drop_prob 0.5 -batch_size 4096 -cuda -us
 Expected accuracy is 85.5\% on [this](http://phontron.com/data/topicclass-v1.tar.gz) dataset.
 
 ### Requirements
-Please install the requirements file provided in the repo using anaconda. 
+Please install the requirements file provided in the repo. 
