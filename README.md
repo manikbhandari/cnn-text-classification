@@ -17,7 +17,7 @@ for instance
 
 >Social sciences and society ||| Several of these rights regulate pre @-@ trial procedure : access to a non @-@ excessive bail , the right to indictment by a grand jury , the right to an information ( charging document ) , the right to a speedy trial , and the right to be tried in a specific venue .
 
-We assume that the data is tokenized and we use python's split function to split it into tokens.
+We assume that the data is tokenized and we use python's split function to split it into tokens. This repository was tested on [this](https://drive.google.com/file/d/1OZ6PQtIqDaCI1FvyjLvMuaq_JBYMfa3d/view?usp=sharing) dataset.
 
 ### EDA
 Some basic EDA is provided in this [notebook](https://github.com/manikbhandari/cnn-text-classification/blob/master/eda.ipynb).
@@ -35,7 +35,7 @@ A template is provided in the repo.
 ```shell script
 python run.py -model kim_cnn -lr 0.001 -drop_prob 0.5 -batch_size 4096 -cuda -use_trainable_embed -use_fixed_embed -gpu 0 -epochs 10
 ``` 
-Expected accuracy is 85.5\% on [this](http://phontron.com/data/topicclass-v1.tar.gz) dataset.
+Expected accuracy is 85.5\% on [this](https://drive.google.com/file/d/1OZ6PQtIqDaCI1FvyjLvMuaq_JBYMfa3d/view?usp=sharing) dataset.
 
 ### Requirements
 Please install the requirements file provided in the repo. 
